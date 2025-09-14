@@ -1,8 +1,12 @@
-<!DOCTYPE html>
-    <html>
-        <body>
-            <form action='{% url 'segunda' %}'>
-            <input type='submit' value='Outra página...'/>
-        </form>
-    </body>
-</html> 
+{% extends 'FilmesApp/base.html' %}
+
+{% block title %}Página Inicial{% endblock %}
+
+{% block content %}
+    <p>Bem-vindo à sua biblioteca de filmes!</p>
+    <p>Use o menu acima para navegar.</p>
+
+    <form action="{% url 'FilmesApp:lista-filmes' %}">
+        <input type='submit' value='Ver Lista de Filmes' class="btn btn-info"/>
+    </form>
+{% endblock %}
