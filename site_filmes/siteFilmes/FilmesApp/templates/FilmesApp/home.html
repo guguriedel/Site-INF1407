@@ -3,10 +3,11 @@
 {% block title %}Página Inicial{% endblock %}
 
 {% block content %}
-    <p>Bem-vindo à sua biblioteca de filmes!</p>
-    <p>Use o menu acima para navegar.</p>
-
-    <form action="{% url 'FilmesApp:lista-filmes' %}">
-        <input type='submit' value='Ver Lista de Filmes' class="btn btn-info"/>
-    </form>
+    <div class="jumbotron">
+        <h1 class="display-4">Bem-vindo ao CineApp!</h1>
+        <p class="lead">Sua biblioteca pessoal para organizar e avaliar filmes.</p>
+        <hr class="my-4">
+        <p>Comece adicionando um novo filme ou navegando pela sua coleção existente.</p>
+        <a class="btn btn-primary btn-lg" href="{% url 'FilmesApp:lista-filmes' %}" role="button">Ver minha coleção</a>
+    </div>
 {% endblock %}

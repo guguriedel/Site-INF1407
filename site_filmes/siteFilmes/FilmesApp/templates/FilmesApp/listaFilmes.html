@@ -1,9 +1,11 @@
 {% extends 'FilmesApp/base.html' %}
 
-{% block title %}Lista de Filmes{% endblock %}
-
 {% block content %}
-    <h2>Filmes Cadastrados</h2>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Filmes Cadastrados</h2>
+        <a href="{% url 'FilmesApp:criar_filme' %}" class="btn btn-primary">Adicionar Novo Filme</a>
+    </div>
+
     <ul>
         {% for filme in filmes %}
             <li>{{ filme.nome }} ({{ filme.data_publicacao|date:"Y" }})</li>
