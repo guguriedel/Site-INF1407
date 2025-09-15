@@ -2,6 +2,8 @@ from django import forms
 from .models import Filme
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
+from datetime import date  # <-- ADICIONE ESTA LINHA DE IMPORTAÇÃO
+
 
 class FilmeModel2Form(forms.ModelForm):
     class Meta:
@@ -31,4 +33,10 @@ class FilmeModel2Form(forms.ModelForm):
         if avaliacao < 1 or avaliacao > 10:
             raise ValidationError(_('Avaliação deve estar entre 1 e 10.'))
         return avaliacao
-
+    # Em FilmesApp/forms.py
+    def clean_data_publicacao(self):
+        data = self.cleaned_data.get('data_publicacao')
+        # O ERRO ACONTECE AQUI, AO USAR 'date' sem tê-la importado
+        if data and data < date(1888, 1, 1): 
+            raise ValidationError(_('Data de publicação inválida. Deve ser a partir de 1888.'))
+        return data
