@@ -9,6 +9,8 @@ from .forms import FilmeModel2Form # Você nomeou sua classe de formulário como
 from django.views.generic.base import View
 from django.http.response import HttpResponseRedirect
 from django.urls.base import reverse_lazy
+from django.contrib.auth.decorators import login_required # 1. IMPORTE O DECORADOR
+
 
 # View para LISTAR os filmes (mantém como Class-Based View)
 class FilmeView(View):
@@ -52,6 +54,11 @@ class FilmeView(View):
 # View para a PÁGINA INICIAL
 def home(request):
     return render(request, 'FilmesApp/home.html')
+
+@login_required(login_url='FilmesApp:login') # 2. APLIQUE O DECORADOR
+def pagina_secreta(request):
+    """Renderiza a página secreta que só pode ser acessada por usuários logados."""
+    return render(request, 'seguranca/paginaSecreta.html')
 
 def homeSec(request):
     #renderiza a pagina de seguranca

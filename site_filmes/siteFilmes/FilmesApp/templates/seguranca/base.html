@@ -4,37 +4,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Biblioteca de Filmes{% endblock %}</title>
+    <title>{% block title %}CineApp{% endblock %}</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-</head>
-<body>
+    </head>
+<body class="d-flex flex-column min-vh-100">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="{% url 'FilmesApp:home-filmes' %}">CineApp</a>
-        <div class="collapse navbar-collapse">
+        <a class="navbar-brand" href="{% url 'FilmesApp:home-filmes' %}">🎬 CineApp</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'FilmesApp:lista-filmes' %}">Lista de Filmes</a>
+                    <a class="nav-link" href="{% url 'FilmesApp:lista-filmes' %}">Minha Coleção</a>
                 </li>
+            </ul>
+            <ul class="navbar-nav">
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'FilmesApp:pagina_secreta' %}">Página Secreta</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown">
+                            Olá, {{ user.username }}
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item" href="{% url 'FilmesApp:logout' %}">Logout</a>
+                        </div>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'FilmesApp:registro' %}">Registrar</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'FilmesApp:login' %}">Login</a>
+                    </li>
+                {% endif %}
             </ul>
         </div>
     </nav>
 
-    <div class="container mt-4">
-        <div class="d-flex justify-content-end mb-3">
-            <div>
-                {% if user.is_authenticated %}
-                    Olá, {{ user.username }} | <a href="{% url 'FilmesApp:logout' %}">Logout</a>
-                {% else %}
-                    <a href="{% url 'FilmesApp:login' %}">Login</a> | <a href="{% url 'FilmesApp:registro' %}">Registrar</a>
-                {% endif %}
-            </div>
-            </div>
-        
-        <main>
-            {% block content %}
-            {% endblock %}
-        </main>
-    </div>
+    <main class="container mt-4 flex-grow-1">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer class="bg-light text-center text-lg-start mt-auto">
+        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.05);">
+            © 2025 CineApp:
+            <a class="text-dark" href="#">Seu Site de Filmes</a>
+        </div>
+    </footer>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>

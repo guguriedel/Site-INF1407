@@ -70,6 +70,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "siteFilmes.wsgi.application"
 
+LOGIN_URL = 'FilmesApp:login'
+LOGOUT_URL = 'FilmesApp:logout'
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
