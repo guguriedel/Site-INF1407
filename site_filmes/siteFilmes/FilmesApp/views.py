@@ -14,7 +14,39 @@ from django.urls.base import reverse_lazy
 class FilmeView(View):
     def get(self, request, *args, **kwargs):
         filmes = Filme.objects.all()
-        contexto = {'filmes': filmes}
+
+        nome_filme = request.GET.get('nome', None)
+        genero = request.GET.get('genero', None)
+        nota_str = request.GET.get('nota', None)
+
+        #Por padrão ordena por dt de publish
+        orderby = request.GET.get('orderby', '-data_publicacao')
+
+        if nome_filme:
+            filmes = filmes.filter(nome__icontains=nome_filme)
+
+        if genero:
+            filmes = filmes.filter(genero__icontains=genero)
+
+        if nota_str:
+            try:
+                nota = float(nota_str)
+                # Filtra por filmes com nota maior ou igual à fornecida
+                filmes = filmes.filter(nota__gte=nota)
+            except (ValueError, TypeError):
+                # Ignora o filtro se a nota não for um número válido
+                pass
+
+        # Lista de campos permitidos para ordenação
+        allowed_orderby_fields = ['nome', '-nome', 'nota', '-nota', 'duracao_em_segundos', '-duracao_em_segundos']
+        if orderby in allowed_orderby_fields:
+            filmes = filmes.order_by(orderby)
+    
+
+        contexto = {
+            'filmes': filmes,
+            'valores_filtro': request.GET # Passa os valores de filtro de volta para o template
+        }
         return render(request, 'FilmesApp/listaFilmes.html', contexto)
 
 # View para a PÁGINA INICIAL
