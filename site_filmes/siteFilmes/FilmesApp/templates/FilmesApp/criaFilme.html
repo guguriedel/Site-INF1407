@@ -1,12 +1,14 @@
-{% extends 'FilmesApp/base.html' %}
+{% extends 'seguranca/base.html' %}
+
+{% block title %}Adicionar Filme{% endblock %}
 
 {% block content %}
     <h2>Adicionar Novo Filme</h2>
 
     <form method="post">
-
-        {% csrf_token %} {{ form.as_p }}
-
+        {% csrf_token %}
+        {{ form.as_p }}
         <button type="submit" class="btn btn-success">Salvar</button>
+        <a href="{% url 'FilmesApp:lista-filmes' %}" class="btn btn-secondary">Cancelar</a>
     </form>
 {% endblock %}
