@@ -1,0 +1,20 @@
+{% extends 'seguranca/base.html' %}
+
+{% block title %}Confirmar Deleção{% endblock %}
+
+{% block content %}
+    <h2>Confirmar Deleção</h2>
+    <hr>
+    <p>Você tem certeza que deseja deletar o filme permanentemente?</p>
+    
+    <div class="card bg-light p-3 mb-3">
+        <h4>{{ object.nome }}</h4>
+        <p>Gênero: {{ object.genero }} | Nota: {{ object.nota }}</p>
+    </div>
+    
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Sim, tenho certeza. Deletar.</button>
+        <a href="{% url 'FilmesApp:lista-filmes' %}" class="btn btn-secondary">Não, cancelar.</a>
+    </form>
+{% endblock %}

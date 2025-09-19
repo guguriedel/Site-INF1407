@@ -1,54 +1,68 @@
 {% extends 'seguranca/base.html' %}
 
+{% block title %}Lista de Filmes{% endblock %}
+
 {% block content %}
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h2>Filmes Cadastrados</h2>
         <a href="{% url 'FilmesApp:criar_filme' %}" class="btn btn-primary">Adicionar Novo Filme</a>
     </div>
 
-    <form method="get" class="mb-4">
-        <div class="form-row">
-            <div class="col-md-4 mb-3">
-                <label for="nome">Nome do Filme</label>
-                <input type="text" class="form-control" name="nome" id="nome" value="{{ valores_filtro.nome }}">
+    <div class="card card-body mb-4">
+        <form method="get" class="mb-0">
+            <div class="form-row">
+                <div class="col-md-4 mb-2">
+                    <label for="nome" class="sr-only">Nome do Filme</label>
+                    <input type="text" class="form-control" name="nome" id="nome" placeholder="Buscar por nome..." value="{{ valores_filtro.nome|default:'' }}">
+                </div>
+                <div class="col-md-3 mb-2">
+                    <label for="genero" class="sr-only">Gênero</label>
+                    <input type="text" class="form-control" name="genero" id="genero" placeholder="Buscar por gênero..." value="{{ valores_filtro.genero|default:'' }}">
+                </div>
+                <div class="col-md-2 mb-2">
+                    <label for="nota" class="sr-only">Nota</label>
+                    <input type="number" step="0.1" class="form-control" name="nota" id="nota" placeholder="Nota maior que..." value="{{ valores_filtro.nota|default:'' }}">
+                </div>
+                <div class="col-md-3 mb-2">
+                    <label for="orderby" class="sr-only">Ordenar por</label>
+                    <select name="orderby" id="orderby" class="form-control">
+                        <option value="-data_publicacao" {% if valores_filtro.orderby == '-data_publicacao' %}selected{% endif %}>Mais Recentes</option>
+                        <option value="nome" {% if valores_filtro.orderby == 'nome' %}selected{% endif %}>Nome (A-Z)</option>
+                        <option value="-nome" {% if valores_filtro.orderby == '-nome' %}selected{% endif %}>Nome (Z-A)</option>
+                        <option value="-nota" {% if valores_filtro.orderby == '-nota' %}selected{% endif %}>Maior Nota</option>
+                        <option value="nota" {% if valores_filtro.orderby == 'nota' %}selected{% endif %}>Menor Nota</option>
+                        <option value="-duracao_em_segundos" {% if valores_filtro.orderby == '-duracao_em_segundos' %}selected{% endif %}>Maior Duração</option>
+                        <option value="duracao_em_segundos" {% if valores_filtro.orderby == 'duracao_em_segundos' %}selected{% endif %}>Menor Duração</option>
+                    </select>
+                </div>
             </div>
-            <div class="col-md-3 mb-3">
-                <label for="genero">Gênero</label>
-                <input type="text" class="form-control" name="genero" id="genero" value="{{ valores_filtro.genero }}">
-            </div>
-            <div class="col-md-2 mb-3">
-                <label for="nota">Nota (maior ou igual a)</label>
-                <input type="number" step="0.1" class="form-control" name="nota" id="nota" value="{{ valores_filtro.nota }}">
-            </div>
-            <div class="col-md-3 mb-3">
-                <label for="orderby">Ordenar por</label>
-                <select name="orderby" id="orderby" class="form-control">
-                    <option value="-data_publicacao" {% if valores_filtro.orderby == '-data_publicacao' %}selected{% endif %}>Mais Recentes</option>
-                    <option value="nome" {% if valores_filtro.orderby == 'nome' %}selected{% endif %}>Nome (A-Z)</option>
-                    <option value="-nome" {% if valores_filtro.orderby == '-nome' %}selected{% endif %}>Nome (Z-A)</option>
-                    <option value="-nota" {% if valores_filtro.orderby == '-nota' %}selected{% endif %}>Maior Nota</option>
-                    <option value="nota" {% if valores_filtro.orderby == 'nota' %}selected{% endif %}>Menor Nota</option>
-                    <option value="-duracao_em_segundos" {% if valores_filtro.orderby == '-duracao_em_segundos' %}selected{% endif %}>Maior Duração</option>
-                    <option value="duracao_em_segundos" {% if valores_filtro.orderby == 'duracao_em_segundos' %}selected{% endif %}>Menor Duração</option>
-                </select>
-            </div>
-        </div>
-        <button type="submit" class="btn btn-secondary">Buscar</button>
-        <a href="{% url 'FilmesApp:lista-filmes' %}" class="btn btn-outline-secondary">Limpar Filtros</a>
-    </form>
+            <button type="submit" class="btn btn-info">Filtrar</button>
+            <a href="{% url 'FilmesApp:lista-filmes' %}" class="btn btn-outline-secondary">Limpar</a>
+        </form>
+    </div>
     
-    <ul class="list-group">
+    <div class="row">
         {% for filme in filmes %}
-            <li class="list-group-item">
-                <h5>{{ filme.nome }} ({{ filme.data_publicacao|date:"Y" }})</h5>
-                <p class="mb-1">
-                    <strong>Gênero:</strong> {{ filme.genero }} |
-                    <strong>Nota:</strong> {{ filme.nota }} |
-                    <strong>Duração:</strong> {{ filme.duracao_em_segundos }} segundos
-                </p>
-            </li>
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">{{ filme.nome }} ({{ filme.data_publicacao|date:"Y" }})</h5>
+                        <p class="card-text">
+                            <strong>Gênero:</strong> {{ filme.genero }}<br>
+                            <strong>Duração:</strong> {{ filme.duracao_em_segundos }} segundos
+                        </p>
+                        <div class="mt-auto">
+                            <p class="mb-2"><strong>Nota:</strong> {{ filme.nota }} / 5.0</p>
+                            <a href="{% url 'FilmesApp:editar_filme' pk=filme.pk %}" class="btn btn-warning btn-sm">Editar</a>
+                            <a href="{% url 'FilmesApp:deletar_filme' pk=filme.pk %}" class="btn btn-danger btn-sm">Deletar</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         {% empty %}
-            <li class="list-group-item">Nenhum filme encontrado.</li>
+            <div class="col">
+                <div class="alert alert-info">Nenhum filme encontrado com os filtros aplicados.</div>
+            </div>
         {% endfor %}
-    </ul>
+    </div>
 {% endblock %}

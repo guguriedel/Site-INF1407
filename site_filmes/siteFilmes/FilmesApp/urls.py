@@ -16,6 +16,11 @@ urlpatterns = [
    # CORRETO: Chamando a CLASSE que criamos e usando .as_view()
     path('filme/novo/', views.CriarFilmeView.as_view(), name='criar_filme'),
 
+    path('filme/<int:pk>/editar/', views.FilmeUpdateView.as_view(), name='editar_filme'),
+    
+    # URL para a página de DELEÇÃO de um filme específico
+    path('filme/<int:pk>/deletar/', views.FilmeDeleteView.as_view(), name='deletar_filme'),
+
     # Rota para a página secreta
     path('secreta/', views.pagina_secreta, name='pagina_secreta'),
 

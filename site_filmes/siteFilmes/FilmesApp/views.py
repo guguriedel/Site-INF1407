@@ -51,6 +51,62 @@ class FilmeView(View):
         }
         return render(request, 'FilmesApp/listaFilmes.html', contexto)
 
+class FilmeUpdateView(View):
+    """
+    Classe para atualizar os dados de um filme existente.
+    """
+    def get(self, request, pk, *args, **kwargs):
+        """
+        Exibe o formulário preenchido com os dados do filme a ser atualizado.
+        """
+        filme = Filme.objects.get(pk=pk) # 1. Busca o Filme pelo ID (pk)
+        form = FilmeModel2Form(instance=filme) # 2. Cria o formulário com os dados do filme
+        
+        contexto = {
+            'form': form,
+        }
+        # 3. Renderiza o mesmo template usado para criar, mas agora com dados
+        return render(request, 'FilmesApp/filme_form.html', contexto)
+
+    def post(self, request, pk, *args, **kwargs):
+        """
+        Salva as alterações enviadas pelo formulário.
+        """
+        filme = Filme.objects.get(pk=pk) # Busca o filme que está sendo editado
+        form = FilmeModel2Form(request.POST, instance=filme) # Passa os dados novos E a instância original
+
+        if form.is_valid():
+            form.save() # Salva as alterações
+            return HttpResponseRedirect(reverse_lazy('FilmesApp:lista-filmes'))
+        else:
+            # Se o formulário for inválido, exibe a página novamente com os erros
+            contexto = {'form': form}
+            return render(request, 'FilmesApp/filme_form.html', contexto)
+        
+# --- Classe para DELETAR um Filme ---
+class FilmeDeleteView(View):
+    """
+    Classe para apagar um filme.
+    """
+    def get(self, request, pk, *args, **kwargs):
+        """
+        Exibe a página de confirmação de exclusão.
+        """
+        filme = Filme.objects.get(pk=pk) # 1. Busca o Filme pelo ID
+        contexto = {'filme': filme}
+        # 2. Renderiza a página de confirmação
+        return render(request, 'FilmesApp/filme_confirm_delete.html', contexto)
+
+    def post(self, request, pk, *args, **kwargs):
+        """
+        Apaga o filme do banco de dados.
+        """
+        filme = Filme.objects.get(pk=pk) # 1. Busca o Filme
+        filme.delete() # 2. Deleta o registro
+        # 3. Redireciona para a lista de filmes
+        return HttpResponseRedirect(reverse_lazy('FilmesApp:lista-filmes'))
+
+
 # View para a PÁGINA INICIAL
 def home(request):
     return render(request, 'FilmesApp/home.html')
