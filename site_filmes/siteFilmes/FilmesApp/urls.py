@@ -22,14 +22,15 @@ urlpatterns = [
     path('filme/<int:pk>/deletar/', views.FilmeDeleteView.as_view(), name='deletar_filme'),
 
     # Rota para a página secreta
-    path('secreta/', views.pagina_secreta, name='pagina_secreta'),
+    path('paginaSecreta/', views.pagina_secreta, name='pagina_secreta'),
 
     # Rota para a página de Login
     path('login/', auth_views.LoginView.as_view(template_name='seguranca/login.html'), name='login'),
     
     # Rota para a ação de Logout
-    path('logout/', auth_views.LogoutView.as_view(next_page=reverse_lazy('pagina_secreta')), name='logout'),
+    path('logout/', auth_views.LogoutView.as_view(next_page=reverse_lazy('FilmesApp:pagina_secreta')), name='logout'),
 
     # Rota para a página de Registro de novo usuário
     path('registro/', views.registro, name='registro'),
+
 ]

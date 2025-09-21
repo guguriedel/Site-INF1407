@@ -20,27 +20,32 @@
                 </li>
             </ul>
             <ul class="navbar-nav">
-                {% if user.is_authenticated %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'FilmesApp:pagina_secreta' %}">Página Secreta</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown">
-                            Olá, {{ user.username }}
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <a class="dropdown-item" href="{% url 'FilmesApp:logout' %}">Logout</a>
-                        </div>
-                    </li>
-                {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'FilmesApp:registro' %}">Registrar</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'FilmesApp:login' %}">Login</a>
-                    </li>
-                {% endif %}
-            </ul>
+    {% if user.is_authenticated %}
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'FilmesApp:pagina_secreta' %}">Página Secreta</a>
+        </li>
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown">
+                Olá, {{ user.username }}
+            </a>
+            <div class="dropdown-menu dropdown-menu-right">
+                
+                <form action="{% url 'FilmesApp:logout' %}" method="post">
+                     {% csrf_token %}
+                    <button type="submit" class="dropdown-item">Logout</button>
+                </form>
+            </div>
+        </li>
+    {% else %}
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'FilmesApp:registro' %}">Registrar</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'FilmesApp:login' %}?next={% url 'FilmesApp:lista-filmes' %}">Login</a>
+        </li>
+    {% endif %}
+</ul>
+            
         </div>
     </nav>
 
