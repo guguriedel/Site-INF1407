@@ -31,7 +31,7 @@ class FilmeView(View):
         filmes = filmes.annotate(
             nota_media = Avg(
                 'nome',
-                filter=Q(nome=F('nome'), data_publicacao=F('data_publicacao'))
+                filter=Q(nome=F('nome'), data_publicacaolicacao=F('data_publicacaolicacao'))
             )
         )
 
@@ -40,7 +40,7 @@ class FilmeView(View):
         nota_str = request.GET.get('nota', None)
 
         #Por padrão ordena por dt de publish
-        orderby = request.GET.get('orderby', '-data_publicacao')
+        orderby = request.GET.get('orderby', '-data_publicacaolicacao')
 
         if nome_filme:
             filmes = filmes.filter(nome__icontains=nome_filme)
@@ -58,7 +58,7 @@ class FilmeView(View):
                 pass
 
         # Lista de campos permitidos para ordenação
-        allowed_orderby_fields = ['nome', '-nome', 'nota', '-nota', 'duracao_em_horass', '-duracao_em_horass']
+        allowed_orderby_fields = ['nome', '-nome', 'nota', '-nota', 'duracao_em_horas', '-duracao_em_horas']
         if orderby in allowed_orderby_fields:
             filmes = filmes.order_by(orderby)
     

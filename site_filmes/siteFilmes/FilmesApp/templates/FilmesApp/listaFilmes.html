@@ -26,7 +26,7 @@
                 <div class="col-md-3 mb-2">
                     <label for="orderby" class="sr-only">Ordenar por</label>
                     <select name="orderby" id="orderby" class="form-control">
-                        <option value="-data_publicacao" {% if valores_filtro.orderby == '-data_publicacao' %}selected{% endif %}>Mais Recentes</option>
+                        <option value="-data_publicacaolicacao" {% if valores_filtro.orderby == '-data_publicacaolicacao' %}selected{% endif %}>Mais Recentes</option>
                         <option value="nome" {% if valores_filtro.orderby == 'nome' %}selected{% endif %}>Nome (A-Z)</option>
                         <option value="-nome" {% if valores_filtro.orderby == '-nome' %}selected{% endif %}>Nome (Z-A)</option>
                         <option value="-nota" {% if valores_filtro.orderby == '-nota' %}selected{% endif %}>Maior Nota</option>
@@ -46,7 +46,7 @@
             <div class="col-md-6 col-lg-4 mb-4">
                 <div class="card h-100">
                     <div class="card-body d-flex flex-column">
-                        <h5 class="card-title">{{ filme.nome }} ({{ filme.data_publicacao|date:"Y" }})</h5>
+                        <h5 class="card-title">{{ filme.nome }} ({{ filme.data_publicacaolicacao|date:"Y" }})</h5>
                         <p class="card-text">
                             <strong>Gênero:</strong> {{ filme.genero }}<br>
                             <strong>Duração:</strong> {{ filme.duracao_em_horass }} segundos

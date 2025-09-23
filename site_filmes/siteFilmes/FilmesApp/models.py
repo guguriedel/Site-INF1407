@@ -13,7 +13,7 @@ class Filme(models.Model):
     # Vamos armazenar em horas para trabalhar com float tbm
     duracao_em_horas = models.DecimalField(max_digits=6, decimal_places=2, help_text="Duração em horas")
     genero = models.CharField(max_length=100, help_text="Gênero do filme")
-    data_publicacao = models.DateField(help_text="Data de Publicação")
+    data_publicacaolicacao = models.DateField(help_text="Data de Publicação")
 
     registrado_por = models.ForeignKey(
         User,
@@ -24,7 +24,7 @@ class Filme(models.Model):
     # O ID int comum é criado automaticamente pelo Django como chave primária (pk).
 
     class Meta:
-        ordering = ['-data_publicacao', 'nome'] # Ordena os filmes por data (mais recente primeiro) e depois por nome
+        ordering = ['-data_publicacaolicacao', 'nome'] # Ordena os filmes por data (mais recente primeiro) e depois por nome
 
     def __str__(self):
         return self.nome
