@@ -7,6 +7,8 @@
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
+        <input type="hidden" nam="next" value="{{next}}">
         <button type="submit" class="btn btn-primary">Login</button>
+        <a href="{% url 'FilmesApp:registro' %}" class="btn btn-link">Criar Conta</a>
     </form>
 {% endblock %}

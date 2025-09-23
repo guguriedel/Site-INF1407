@@ -49,6 +49,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "FilmesApp.midleware.LoginRequiredMiddleware",
 ]
 
 ROOT_URLCONF = "siteFilmes.urls"
@@ -72,6 +73,10 @@ WSGI_APPLICATION = "siteFilmes.wsgi.application"
 
 LOGIN_URL = 'FilmesApp:login'
 LOGOUT_URL = 'home-filmes'
+
+## Autenticação ##
+LOGIN_REDIRECT_URL = 'FilmesApp:lista-filmes'
+LOGOUT_REDIRECT_URL = 'FilmesApp:login'
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
@@ -124,3 +129,7 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+
+

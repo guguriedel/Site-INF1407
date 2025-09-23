@@ -31,8 +31,8 @@
                         <option value="-nome" {% if valores_filtro.orderby == '-nome' %}selected{% endif %}>Nome (Z-A)</option>
                         <option value="-nota" {% if valores_filtro.orderby == '-nota' %}selected{% endif %}>Maior Nota</option>
                         <option value="nota" {% if valores_filtro.orderby == 'nota' %}selected{% endif %}>Menor Nota</option>
-                        <option value="-duracao_em_segundos" {% if valores_filtro.orderby == '-duracao_em_segundos' %}selected{% endif %}>Maior Duração</option>
-                        <option value="duracao_em_segundos" {% if valores_filtro.orderby == 'duracao_em_segundos' %}selected{% endif %}>Menor Duração</option>
+                        <option value="-duracao_em_horass" {% if valores_filtro.orderby == '-duracao_em_horass' %}selected{% endif %}>Maior Duração</option>
+                        <option value="duracao_em_horass" {% if valores_filtro.orderby == 'duracao_em_horass' %}selected{% endif %}>Menor Duração</option>
                     </select>
                 </div>
             </div>
@@ -49,10 +49,13 @@
                         <h5 class="card-title">{{ filme.nome }} ({{ filme.data_publicacao|date:"Y" }})</h5>
                         <p class="card-text">
                             <strong>Gênero:</strong> {{ filme.genero }}<br>
-                            <strong>Duração:</strong> {{ filme.duracao_em_segundos }} segundos
+                            <strong>Duração:</strong> {{ filme.duracao_em_horass }} segundos
                         </p>
                         <div class="mt-auto">
                             <p class="mb-2"><strong>Nota:</strong> {{ filme.nota }} / 5.0</p>
+                            <!--Modalidade Futura -> Média global entre users
+                            <p><strong>Média global:</strong> {{ filme.nota_media_global|floatformat:1 }} / 5.0</p>
+                            -->
                             <a href="{% url 'FilmesApp:editar_filme' pk=filme.pk %}" class="btn btn-warning btn-sm">Editar</a>
                             <a href="{% url 'FilmesApp:deletar_filme' pk=filme.pk %}" class="btn btn-danger btn-sm">Deletar</a>
                         </div>

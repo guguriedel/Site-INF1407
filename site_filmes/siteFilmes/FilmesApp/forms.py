@@ -8,7 +8,7 @@ from datetime import date
 class FilmeModel2Form(forms.ModelForm):
     class Meta:
         model = Filme
-        fields = ['nome', 'nota', 'duracao_em_segundos', 'genero', 'data_publicacao']
+        fields = ['nome', 'nota', 'duracao_em_horas', 'genero', 'data_publicacao']
         
 
     def clean_data_publicacao(self):

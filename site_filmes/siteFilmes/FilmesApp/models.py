@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
 
 class Filme(models.Model):
@@ -9,11 +10,16 @@ class Filme(models.Model):
         validators=[MinValueValidator(1.0), MaxValueValidator(5.0)],
         help_text="Nota de 1 a 5"
     )
-    # É melhor armazenar a duração em uma unidade padrão, como segundos (inteiro).
-    # A conversão para horas pode ser feita na exibição.
-    duracao_em_segundos = models.IntegerField(help_text="Duração em segundos")
+    # Vamos armazenar em horas para trabalhar com float tbm
+    duracao_em_horas = models.DecimalField(max_digits=6, decimal_places=2, help_text="Duração em horas")
     genero = models.CharField(max_length=100, help_text="Gênero do filme")
     data_publicacao = models.DateField(help_text="Data de Publicação")
+
+    registrado_por = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='filmes'
+    )
 
     # O ID int comum é criado automaticamente pelo Django como chave primária (pk).
 

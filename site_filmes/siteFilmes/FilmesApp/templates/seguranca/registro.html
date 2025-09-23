@@ -1,16 +1,23 @@
 {% extends 'seguranca/base.html' %}
 
-{% block title %}Login{% endblock %}
+{% block title %}Registrar-se{% endblock %}
 
 {% block content %}
-    <h2>Página de Login</h2>
+    <h2>Criar Conta</h2>
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
 
         <input type="hidden" name="next" value="{{ next }}">
 
-        <button type="submit" class="btn btn-primary">Login</button>
+        <button type="submit" class="btn btn-success">Registrar-se</button>
     </form>
+    {% if form.errors %}
+    <div class="alert alert-danger">
+        {{form.errors}}
+    </div>
+    {%endif%}
+        <a href="{% url 'FilmesApp:login' %}" class="btn btn-link">Já Possuo Conta</a>
+
 {% endblock %}
 

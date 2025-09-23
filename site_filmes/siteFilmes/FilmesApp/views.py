@@ -5,17 +5,35 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 from django.contrib.auth.forms import UserCreationForm
 from .models import Filme
-from .forms import FilmeModel2Form # Você nomeou sua classe de formulário como FilmeModel2Form
+from .forms import FilmeModel2Form
 from django.views.generic.base import View
 from django.http.response import HttpResponseRedirect
 from django.urls.base import reverse_lazy
-from django.contrib.auth.decorators import login_required # 1. IMPORTE O DECORADOR
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views import View
+from django.shortcuts import get_object_or_404
+from django.contrib.auth import login
+from django.db.models import Avg, Q, F
+
+
 
 
 # View para LISTAR os filmes (mantém como Class-Based View)
 class FilmeView(View):
+
+    login_url = 'FilmesApp:login'
+    redirect_field_name = 'next'
+
     def get(self, request, *args, **kwargs):
-        filmes = Filme.objects.all()
+        filmes = Filme.objects.filter(registrado_por=request.user)
+
+        filmes = filmes.annotate(
+            nota_media = Avg(
+                'nome',
+                filter=Q(nome=F('nome'), data_publicacao=F('data_publicacao'))
+            )
+        )
 
         nome_filme = request.GET.get('nome', None)
         genero = request.GET.get('genero', None)
@@ -40,7 +58,7 @@ class FilmeView(View):
                 pass
 
         # Lista de campos permitidos para ordenação
-        allowed_orderby_fields = ['nome', '-nome', 'nota', '-nota', 'duracao_em_segundos', '-duracao_em_segundos']
+        allowed_orderby_fields = ['nome', '-nome', 'nota', '-nota', 'duracao_em_horass', '-duracao_em_horass']
         if orderby in allowed_orderby_fields:
             filmes = filmes.order_by(orderby)
     
@@ -59,7 +77,7 @@ class FilmeUpdateView(View):
         """
         Exibe o formulário preenchido com os dados do filme a ser atualizado.
         """
-        filme = Filme.objects.get(pk=pk) # 1. Busca o Filme pelo ID (pk)
+        filme = get_object_or_404(Filme, pk=pk, regitrado_por=request.user ) # 1. Busca o Filme pelo ID (pk)
         form = FilmeModel2Form(instance=filme) # 2. Cria o formulário com os dados do filme
         
         contexto = {
@@ -121,14 +139,25 @@ def homeSec(request):
     return render(request, 'seguranca/base.html')
 
 def registro(request):
+
+    #Auto-Redirect
+    if request.user.is_authenticated:
+        return redirect('FilmesApp:lista-filmes')
+
     if request.method == 'POST':
         formulario = UserCreationForm(request.POST)
+        next_url = request.POST.get('next') or 'FilmesApp:lista-filmes'
+
         if formulario.is_valid():
-            formulario.save()
-            return redirect('sec-home')
+            user = formulario.save()
+            login(request, user)
+            return redirect(next_url)
     else:
         formulario = UserCreationForm()
-    context = {'form': formulario, }
+        next_url = request.GET.get('next', '')
+
+    context = {'form': formulario, 
+               'next': next_url}
     return render(request, 'seguranca/registro.html', context)
 
 # View para CRIAR um novo filme (CORRIGIDO)
@@ -143,8 +172,10 @@ class CriarFilmeView(View):
     def post(self, request, *args, **kwargs):
         formulario = FilmeModel2Form(request.POST)
         if formulario.is_valid():
-            formulario.save()
-            # A linha filme.save() não é necessária, form.save() já salva.
+            filme = formulario.save(commit=False)
+            filme.registrado_por = request.user
+            filme.save()
+
             return HttpResponseRedirect(reverse_lazy('FilmesApp:lista-filmes'))
         else:
             # Se o formulário for inválido, precisamos renderizar a página novamente com os erros
