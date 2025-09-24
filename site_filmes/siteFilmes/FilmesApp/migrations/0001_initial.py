@@ -23,11 +23,11 @@ class Migration(migrations.Migration):
                 ('nota', models.DecimalField(decimal_places=1, help_text='Nota de 1 a 5', max_digits=2, validators=[django.core.validators.MinValueValidator(1.0), django.core.validators.MaxValueValidator(5.0)])),
                 ('duracao_em_horas', models.DecimalField(decimal_places=2, help_text='Duração em horas', max_digits=6)),
                 ('genero', models.CharField(help_text='Gênero do filme', max_length=100)),
-                ('data_publicacaolicacao', models.DateField(help_text='Data de Publicação')),
+                ('data_publicacao', models.DateField(help_text='Data de Publicação')),
                 ('registrado_por', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='filmes', to=settings.AUTH_USER_MODEL)),
             ],
             options={
-                'ordering': ['-data_publicacaolicacao', 'nome'],
+                'ordering': ['-data_publicacao', 'nome'],
             },
         ),
     ]
