@@ -71,6 +71,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "siteFilmes.wsgi.application"
 
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' # Durante o desenvolvimento, os emails serão exibidos no console
+
 LOGIN_URL = 'FilmesApp:login'
 LOGOUT_URL = 'home-filmes'
 

@@ -77,7 +77,7 @@ class FilmeUpdateView(View):
         """
         Exibe o formulário preenchido com os dados do filme a ser atualizado.
         """
-        filme = get_object_or_404(Filme, pk=pk, regitrado_por=request.user ) # 1. Busca o Filme pelo ID (pk)
+        filme = get_object_or_404(Filme, pk=pk, registrado_por=request.user ) # 1. Busca o Filme pelo ID (pk)
         form = FilmeModel2Form(instance=filme) # 2. Cria o formulário com os dados do filme
         
         contexto = {
@@ -181,4 +181,3 @@ class CriarFilmeView(View):
             # Se o formulário for inválido, precisamos renderizar a página novamente com os erros
             contexto = {'form': formulario}
             return render(request, 'FilmesApp/criaFilme.html', contexto)
-
