@@ -1,4 +1,7 @@
 # 🎬 CineApp - Sua Biblioteca de Filmes Pessoal
+### Alunos:
+* Gustavo Riedel - 2210375
+* Rdorigo Kauer 2111468
 
 > Um projeto web desenvolvido com Django para gerenciar uma coleção pessoal de filmes, incluindo funcionalidades completas de CRUD (Criar, Ler, Atualizar, Deletar) e um sistema robusto de autenticação de usuários.
 
